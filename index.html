@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redirecting to Dashboard</title>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+      const liffId = "2002964196-0Em8MgJk"; // ใส่ LIFF ID ของคุณ
+      const appScriptUrl = "https://script.google.com/macros/s/AKfycbxM42kon4VsF80Z7pmRXbOw-0RuK9pO23ks9eRFqwUysq5_s_oRpNwagvsccCNC7-9t1Q/exec"; // URL ของ Google Apps Script
+
+      liff.init({ liffId }).then(() => {
+        if (liff.isLoggedIn()) {
+          liff.getProfile().then(profile => {
+            const userProfile = {
+              userId: profile.userId,
+              displayName: profile.displayName,
+              pictureUrl: profile.pictureUrl
+            };
+
+            // ส่งข้อมูลผู้ใช้ไปยัง Google Apps Script
+            const query = new URLSearchParams(userProfile).toString();
+            window.location.replace(`${appScriptUrl}?${query}`);
+          }).catch(err => {
+            alert("ไม่สามารถดึงข้อมูลโปรไฟล์ได้: " + err);
+          });
+        } else {
+          liff.login();
+        }
+      }).catch(err => {
+        alert("เกิดข้อผิดพลาดในการเริ่มต้น LIFF: " + err);
+      });
+    </script>
+  </head>
+  <body>
+    <h1>กำลังเข้าสู่ระบบ...</h1>
+  </body>
+</html>
