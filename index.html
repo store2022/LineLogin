@@ -40,18 +40,20 @@
             // ดึงข้อมูลผู้ใช้
             liff.getProfile()
               .then(profile => {
-                // ส่งข้อมูลผู้ใช้ไปยัง Google Apps Script
+                // ส่งข้อมูลผู้ใช้ไปยัง Google Apps Script ด้วย window.location.replace
                 const userData = {
                   userId: profile.userId,
                   displayName: profile.displayName,
                   pictureUrl: profile.pictureUrl
                 };
 
-                // ส่งข้อมูลผ่าน URL (GET)
+                // สร้าง query string จากข้อมูล
                 const query = new URLSearchParams(userData).toString();
-                const redirectUrl = `${googleAppScriptUrl}?${query}`;
 
-                // ส่งข้อมูลและเปลี่ยนเส้นทางไปยัง Google Apps Script
+                // ส่งข้อมูลไปยัง Google Apps Script
+                const redirectUrl = `${googleAppScriptUrl}?${query}`;
+                
+                // ใช้ window.location.replace เพื่อไปยัง Google Apps Script
                 window.location.replace(redirectUrl);
               })
               .catch(err => {
